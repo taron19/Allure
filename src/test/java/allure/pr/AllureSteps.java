@@ -3,8 +3,8 @@ package allure.pr;
 import com.codeborne.selenide.Condition;
 import io.qameta.allure.Step;
 
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static io.qameta.allure.Allure.attachment;
 
 public class AllureSteps {
 
@@ -25,6 +25,6 @@ public class AllureSteps {
 
     @Step("проверяем что это тип ошибки")
     public void checkBugType(String bug) {
-        $(".Text__StyledText-sc-1klmep6-0").shouldHave(Condition.text(bug));
+        $$(".prc-Text-Text-0ima0").findBy(Condition.text(bug)).shouldBe(Condition.visible);
     }
 }

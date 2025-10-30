@@ -10,10 +10,10 @@ import org.junit.jupiter.api.Test;
 import javax.management.loading.ClassLoaderRepository;
 
 import static com.codeborne.selenide.Selectors.withText;
-import static com.codeborne.selenide.Selenide.$;
-import static com.codeborne.selenide.Selenide.open;
+import static com.codeborne.selenide.Selenide.*;
+import static io.qameta.allure.Allure.attachment;
 import static io.qameta.allure.Allure.step;
-import static org.openqa.selenium.By.linkText;
+
 
 public class Test1 {
 
@@ -23,7 +23,7 @@ public class Test1 {
 
     @BeforeAll
     public static void init() {
-        Configuration.timeout = 6000;
+        Configuration.timeout = 10000;
         Configuration.pageLoadStrategy = "eager";
     }
 
@@ -35,7 +35,7 @@ public class Test1 {
         $("#issues-tab [data-content='Issues']").click();
         $(withText("#1")).shouldBe(Condition.exist);
         $("a[href='/taron19/Allure/issues/1']").shouldHave(Condition.exactText("FirstIssue"));
-        $(".TokenTextContainer-sc-690ded13-0 fKvBFZ").shouldHave(Condition.exactText("bug"));
+        $$(".prc-Text-Text-0ima0").findBy(Condition.text(BUG_TYPE)).shouldBe(Condition.visible);
 
 
     }
@@ -43,12 +43,16 @@ public class Test1 {
     @Test
     void lambdaTestAllure() {
         SelenideLogger.addListener("allureListener", new AllureSelenide());
-        step("открываем нужный репозиторий GitHub", () -> open("https://github.com/" + REPOSITORY));
-        step("кликаем по кнопке Issues ", () -> $("#issues-tab [data-content='Issues']").click());
+        step("открываем нужный репозиторий GitHub",
+                () -> open("https://github.com/" + REPOSITORY));
+        attachment("source", webdriver().driver().source());
+        step("кликаем по кнопке Issues ", () ->
+                $("#issues-tab [data-content='Issues']").click());
+        attachment("source", webdriver().driver().source());
         step("проверяем название Issue", () ->
                 $("a[href='/taron19/Allure/issues/1']").shouldHave(Condition.exactText("FirstIssue")));
         step("проверяем что это тип ошибки" + BUG_TYPE,
-                () -> $(".Text__StyledText-sc-1klmep6-0").shouldHave(Condition.text(BUG_TYPE)));
+                () -> $$(".prc-Text-Text-0ima0").findBy(Condition.text(BUG_TYPE)).shouldBe(Condition.visible));
     }
 
 
