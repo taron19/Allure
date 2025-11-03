@@ -1,6 +1,8 @@
 package allure.pr;
 
 import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.ElementsCollection;
+import com.codeborne.selenide.SelenideElement;
 import com.codeborne.selenide.WebDriverRunner;
 import io.qameta.allure.Attachment;
 import io.qameta.allure.Step;
@@ -12,28 +14,36 @@ import static io.qameta.allure.Allure.attachment;
 
 public class AllureSteps {
 
-    @Step("открываем нужный репозиторий GitHub")
+    private final SelenideElement issuesTab = $("#issues-tab [data-content='Issues']");
+    private final SelenideElement checkName = $("a[href='/taron19/Allure/issues/1']");
+    private final String text = "FirstIssue";
+    private final String openURL = "https://github.com/";
+    private final ElementsCollection bugCollection = elements(".prc-Text-Text-0ima0");
+
+
+   /* @Step("открываем нужный репозиторий GitHub")
     public void openPage(String repo) {
-        open("https://github.com/" + repo);
-    }
+        open(openURL + repo);
+    }*/
 
     @Step(" кликаем по кнопке Issues")
     public void clickIssueButton() {
-        $("#issues-tab [data-content='Issues']").click();
+        $(issuesTab).click();
     }
 
     @Step("проверяем название Issue")
     public void checkNameIssue() {
-        $("a[href='/taron19/Allure/issues/1']").shouldHave(Condition.exactText("FirstIssue"));
+        $(checkName).shouldHave(Condition.exactText(text));
     }
 
     @Step("проверяем что это тип ошибки")
     public void checkBugType(String bug) {
-        $$(".prc-Text-Text-0ima0").findBy(Condition.text(bug)).shouldBe(Condition.visible);
+        $$(bugCollection).findBy(Condition.text(bug)).shouldBe(Condition.visible);
     }
 
     /**
      * сериализация нашего скриншота
+     *
      * @param name
      * @return
      */

@@ -25,6 +25,9 @@ public class TestIssueInGitHub {
     public static void init() {
         Configuration.timeout = 10000;
         Configuration.pageLoadStrategy = "eager";
+        step("открываем нужный репозиторий GitHub",
+                () -> open("https://github.com/" + REPOSITORY));
+        SelenideLogger.addListener("allureListener", new AllureSelenide());
     }
 
     @Test
@@ -32,17 +35,14 @@ public class TestIssueInGitHub {
     @DisplayName("Проверка Issue в репозитории github")
     @Link(value = "GitHub Issue", url = "https://github.com/taron19/Allure/issues")
     @Severity(SeverityLevel.CRITICAL)           // насколько важен тест
-    @Feature("issue в репозитории")               // крупная функциональность
-    @Story("Создание issue")               // конкретный сценарий/история внутри фичи
+    @Feature("issue в репозитории 1")               // крупная функциональность
+    @Story("Создание issue 1")
+        // конкретный сценарий/история внутри фичи
     void testSelenide() {
-        //для создания детальных и красивых отчетов о тестировании
-        SelenideLogger.addListener("allureListener", new AllureSelenide());
-        open("https://github.com/" + REPOSITORY);
         $("#issues-tab [data-content='Issues']").click();
         $(withText("#1")).shouldBe(Condition.exist);
         $("a[href='/taron19/Allure/issues/1']").shouldHave(Condition.exactText("FirstIssue"));
         $$(".prc-Text-Text-0ima0").findBy(Condition.text(BUG_TYPE)).shouldBe(Condition.visible);
-
 
     }
 
@@ -51,12 +51,10 @@ public class TestIssueInGitHub {
     @DisplayName("Проверка Issue в репозитории github")
     @Link(value = "GitHub Issue", url = "https://github.com/taron19/Allure/issues")
     @Severity(SeverityLevel.CRITICAL)
-    @Feature("issue в репозитории")
-    @Story("Создание issue")
+    @Feature("issue в репозитории 2")
+    @Story("Создание issue 2")
     void lambdaTestAllure() {
-        SelenideLogger.addListener("allureListener", new AllureSelenide());
-        step("открываем нужный репозиторий GitHub",
-                () -> open("https://github.com/" + REPOSITORY));
+
         attachment("source", webdriver().driver().source());
 
         step("кликаем по кнопке Issues ", () ->
@@ -73,13 +71,12 @@ public class TestIssueInGitHub {
     @DisplayName("Проверка Issue в репозитории github")
     @Link(value = "GitHub Issue", url = "https://github.com/taron19/Allure/issues")
     @Severity(SeverityLevel.CRITICAL)
-    @Feature("issue в репозитории")
-    @Story("Создание issue")
+    @Feature("issue в репозитории 3")
+    @Story("Создание issue 3")
     void annotationTestAllure() {
-        SelenideLogger.addListener("allureListener", new AllureSelenide());
+
 
         AllureSteps allureSteps = new AllureSteps();
-        allureSteps.openPage(REPOSITORY);
         allureSteps.takeScreenshot("после открытия страницы");
         //Фото можно также делать
         //attachment("Screenshot", new ByteArrayInputStream(allureSteps.takeScreenshot("после открытия страницы")));
